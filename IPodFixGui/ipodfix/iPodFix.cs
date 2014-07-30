@@ -107,6 +107,7 @@ namespace IPodFixGui.ipodfix
 
         public void Test()
         {
+            // This is a test comment!
             string p = "E:\\my-ipod-backup-test\\Music\\F04\\AYEK.mp3";
 
             TagLib.File t = TagLib.File.Create(p);
