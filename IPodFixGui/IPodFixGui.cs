@@ -18,6 +18,8 @@ namespace IPodFixGui
         public IPodFixGui()
         {
             InitializeComponent();
+            m_Fixer = new iPodFix();
+            m_Fixer.Test();
         }
 
         /// <summary>
@@ -28,7 +30,16 @@ namespace IPodFixGui
         private void sourceDirButton_Click(object sender, EventArgs e)
         {
             DialogResult res = folderBrowserDialog.ShowDialog();
-            sourceDirInput.Text = folderBrowserDialog.SelectedPath;
+            m_Fixer.SourceDir = folderBrowserDialog.SelectedPath;
+            if (m_Fixer.ValidSourceDir())
+            {
+                sourceDirInput.Text = folderBrowserDialog.SelectedPath;
+            }
+            else
+            {
+                MessageBox.Show("Invalid source directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                folderBrowserDialog.SelectedPath = "";
+            }
         }
 
         /// <summary>
@@ -38,8 +49,26 @@ namespace IPodFixGui
         /// <param name="e">event arguments</param>
         private void destinationDirButton_Click(object sender, EventArgs e)
         {
-            DialogResult res = folderBrowserDialog.ShowDialog();
-            destinationDirInput.Text = folderBrowserDialog.SelectedPath;
+            folderBrowserDialog.ShowDialog();
+            bool Empty = (Directory.GetFiles(folderBrowserDialog.SelectedPath).Length == 0);
+            Empty = Empty && (Directory.GetDirectories(folderBrowserDialog.SelectedPath).Length == 0);
+            bool SelectDir = false;
+            if (!Empty)
+            {
+                DialogResult res = MessageBox.Show("Destination directory is not empty.  Continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (res == DialogResult.OK)
+                {
+                    SelectDir = true;
+                }
+            }
+            if (Empty || SelectDir)
+            {
+                destinationDirInput.Text = folderBrowserDialog.SelectedPath;
+            }
+            else 
+            {
+                folderBrowserDialog.SelectedPath = "";
+            }
         }
 
         /// <summary>
@@ -50,7 +79,7 @@ namespace IPodFixGui
         private void fixButton_Click(object sender, EventArgs e)
         {
             //m_Fixer = new iPodFix(sourceDirInput.Text, destinationDirInput.Text);
-            m_Fixer = new iPodFix("E:\\my-ipod-backup", "R:\\ipod");
+            //m_Fixer = new iPodFix("E:\\my-ipod-backup", "R:\\ipod");
             if (!ValidInput() || !m_Fixer.ValidSourceDir())
             {
                 //MessageBox.Show("Invalid source and/or destination directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

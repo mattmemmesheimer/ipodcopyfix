@@ -28,14 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IPodFixGui));
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.sourceDirLabel = new System.Windows.Forms.Label();
             this.sourceDirInput = new System.Windows.Forms.TextBox();
             this.destinationDirLabel = new System.Windows.Forms.Label();
             this.destinationDirInput = new System.Windows.Forms.TextBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.sourceDirButton = new System.Windows.Forms.Button();
             this.destinationDirButton = new System.Windows.Forms.Button();
             this.fixButton = new System.Windows.Forms.Button();
@@ -141,7 +139,7 @@
             this.statusLabel.Text = "Select source and destination directories.";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // IPodFixGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -157,7 +155,7 @@
             this.Controls.Add(this.sourceDirInput);
             this.Controls.Add(this.sourceDirLabel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "iPod Fix Gui";
+            this.Name = "IPodFixGui";
             this.Text = "iPod Directory Fixer";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -171,7 +169,6 @@
         private System.Windows.Forms.TextBox sourceDirInput;
         private System.Windows.Forms.Label destinationDirLabel;
         private System.Windows.Forms.TextBox destinationDirInput;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button sourceDirButton;
         private System.Windows.Forms.Button destinationDirButton;
         private System.Windows.Forms.Button fixButton;

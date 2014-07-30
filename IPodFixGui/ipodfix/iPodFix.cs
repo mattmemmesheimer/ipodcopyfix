@@ -12,13 +12,22 @@ namespace IPodFixGui.ipodfix
     {
         // constants
         public const string MUSIC_DIR = "Music";
-        public const int MAX_NUM_THREADS = 10;
+        public const int MAX_NUM_THREADS = 25;
         // members
-        public string m_SourceDir { get; set; }
-        public string m_MusicDir { get; set; }
-        public string m_DestDir { get; set; }
-        private BackgroundWorker m_MainThread { get; set; }
-        private List<BackgroundWorker> m_Threads { get; set; }
+        public string SourceDir
+        { 
+            get { return m_SourceDir; } 
+            set 
+            {
+                m_SourceDir = value;
+                m_MusicDir = Path.Combine(m_SourceDir, MUSIC_DIR);
+            } 
+        }
+        public string DestinationDir { get; set; }
+        private string m_SourceDir;
+        private string m_MusicDir;
+        private BackgroundWorker m_MainThread;
+        private List<BackgroundWorker> m_Threads;
         private int m_NumDirs = 0;
         private int m_NumDirsFixed = 0;
         private object m_Lock;
@@ -48,10 +57,12 @@ namespace IPodFixGui.ipodfix
         /// <param name="DestinationDir">destination directory</param>
         public iPodFix(string SourceDir, string DestinationDir)
         {
-            m_SourceDir = SourceDir;
-            m_MusicDir = Path.Combine(m_SourceDir, MUSIC_DIR);
-            m_DestDir = DestinationDir;
+            this.SourceDir = SourceDir;
+            m_MusicDir = Path.Combine(SourceDir, MUSIC_DIR);
+            this.DestinationDir = DestinationDir;
         }
+
+        public iPodFix() : this("", "") { }
 
         /// <summary>
         /// Determines if the source directory is valid by checking for the presence of
@@ -92,6 +103,15 @@ namespace IPodFixGui.ipodfix
             }
             res.Success = true;
             return res;
+        }
+
+        public void Test()
+        {
+            string p = "E:\\my-ipod-backup-test\\Music\\F04\\AYEK.mp3";
+
+            TagLib.File t = TagLib.File.Create(p);
+            System.Console.WriteLine(t.Tag.FirstAlbumArtist);
+
         }
 
         /// <summary>
@@ -183,7 +203,7 @@ namespace IPodFixGui.ipodfix
         /// <returns>path of the album artist directory</returns>
         private string CreateAlbumArtistDirectory(string artist)
         {
-            string AlbumArtistPath = Path.Combine(m_DestDir, artist);
+            string AlbumArtistPath = Path.Combine(this.DestinationDir, artist);
             if (!Directory.Exists(AlbumArtistPath))
             {
                 Directory.CreateDirectory(AlbumArtistPath);
@@ -237,9 +257,12 @@ namespace IPodFixGui.ipodfix
                 {
                     TagLib.File TagFile = TagLib.File.Create(AudioFile);
                     // ensure an album artist exists
-                    if (String.IsNullOrEmpty(TagFile.Tag.FirstAlbumArtist)) { continue; }
+                    if (String.IsNullOrEmpty(TagFile.Tag.FirstAlbumArtist) &&
+                        String.IsNullOrEmpty(TagFile.Tag.FirstPerformer)
+                        ) { Console.WriteLine("skipping" + AudioFile); continue; }
                     // create directories if necessary
-                    string AlbumArtistDir = CreateAlbumArtistDirectory(TagFile.Tag.FirstAlbumArtist);
+                    string artist = String.IsNullOrEmpty(TagFile.Tag.FirstPerformer) ? TagFile.Tag.FirstAlbumArtist : TagFile.Tag.FirstPerformer;
+                    string AlbumArtistDir = CreateAlbumArtistDirectory(artist);
                     string AlbumDir = CreateAlbumDirectory(AlbumArtistDir, TagFile.Tag.Album);
                     // create the audio file
                     CreateAudioFile(AudioFile, AlbumDir, TagFile);
