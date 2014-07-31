@@ -53,6 +53,8 @@
             // 
             // sourceDirInput
             // 
+            this.sourceDirInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.sourceDirInput.Enabled = false;
             this.sourceDirInput.Location = new System.Drawing.Point(123, 12);
             this.sourceDirInput.Name = "sourceDirInput";
@@ -70,6 +72,8 @@
             // 
             // destinationDirInput
             // 
+            this.destinationDirInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.destinationDirInput.Enabled = false;
             this.destinationDirInput.Location = new System.Drawing.Point(123, 44);
             this.destinationDirInput.Name = "destinationDirInput";
@@ -78,6 +82,7 @@
             // 
             // sourceDirButton
             // 
+            this.sourceDirButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.sourceDirButton.Image = ((System.Drawing.Image)(resources.GetObject("sourceDirButton.Image")));
             this.sourceDirButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.sourceDirButton.Location = new System.Drawing.Point(293, 10);
@@ -91,6 +96,7 @@
             // 
             // destinationDirButton
             // 
+            this.destinationDirButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.destinationDirButton.Image = ((System.Drawing.Image)(resources.GetObject("destinationDirButton.Image")));
             this.destinationDirButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.destinationDirButton.Location = new System.Drawing.Point(293, 42);
@@ -104,6 +110,7 @@
             // 
             // fixButton
             // 
+            this.fixButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.fixButton.Image = ((System.Drawing.Image)(resources.GetObject("fixButton.Image")));
             this.fixButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fixButton.Location = new System.Drawing.Point(12, 78);
@@ -116,6 +123,8 @@
             // 
             // fixProgressBar
             // 
+            this.fixProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fixProgressBar.Location = new System.Drawing.Point(12, 129);
             this.fixProgressBar.Name = "fixProgressBar";
             this.fixProgressBar.Size = new System.Drawing.Size(341, 23);
@@ -123,6 +132,7 @@
             // 
             // cancelButton
             // 
+            this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cancelButton.Location = new System.Drawing.Point(93, 78);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
@@ -132,6 +142,8 @@
             // 
             // statusLabel
             // 
+            this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.statusLabel.Location = new System.Drawing.Point(9, 111);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(344, 13);
@@ -155,6 +167,7 @@
             this.Controls.Add(this.sourceDirInput);
             this.Controls.Add(this.sourceDirLabel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(386, 201);
             this.Name = "IPodFixGui";
             this.Text = "iPod Directory Fixer";
             this.ResumeLayout(false);
