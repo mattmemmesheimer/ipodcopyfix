@@ -19,7 +19,6 @@ namespace IPodFixGui
         {
             InitializeComponent();
             m_Fixer = new iPodFix();
-            m_Fixer.Test();
         }
 
         /// <summary>

@@ -105,16 +105,6 @@ namespace IPodFixGui.ipodfix
             return res;
         }
 
-        public void Test()
-        {
-            // This is a test comment!
-            string p = "E:\\my-ipod-backup-test\\Music\\F04\\AYEK.mp3";
-
-            TagLib.File t = TagLib.File.Create(p);
-            System.Console.WriteLine(t.Tag.FirstAlbumArtist);
-
-        }
-
         /// <summary>
         /// "Main" thread that will manage worker threads to fix each directory.
         /// </summary>
