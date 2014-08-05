@@ -11,27 +11,27 @@ namespace IPodFixGui.ipodfix
     class iPodFix
     {
         // constants
-        public const string MUSIC_DIR = "Music";
-        public const int MAX_NUM_THREADS = 25;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public const string MusicDir = "Music";
+        public const int MaxNumThreads = 25;
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         // members
         public string SourceDir
         { 
-            get { return m_SourceDir; } 
+            get { return _sourceDir; } 
             set 
             {
-                m_SourceDir = value;
-                m_MusicDir = Path.Combine(m_SourceDir, MUSIC_DIR);
+                _sourceDir = value;
+                _musicDir = Path.Combine(_sourceDir, MusicDir);
             } 
         }
         public string DestinationDir { get; set; }
-        private string m_SourceDir;
-        private string m_MusicDir;
-        private BackgroundWorker m_MainThread;
-        private List<BackgroundWorker> m_Threads;
-        private int m_NumDirs = 0;
-        private int m_NumDirsFixed = 0;
-        private object m_Lock;
+        private string _sourceDir;
+        private string _musicDir;
+        private BackgroundWorker _mainThread;
+        private List<BackgroundWorker> _threads;
+        private int _numDirs = 0;
+        private int _numDirsFixed = 0;
+        private object _lock;
         // events
         public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
         public event StatusUpdateHandler OnUpdateStatus;
@@ -39,12 +39,12 @@ namespace IPodFixGui.ipodfix
         /// <summary>
         /// Class containing info on the result of the fix operation.
         /// </summary>
-        public class iPodFixResult
+        public class IPodFixResult
         {
             public bool Cancelled { get; set; }
             public bool Success { get; set; }
 
-            public iPodFixResult()
+            public IPodFixResult()
             {
                 this.Cancelled = false;
                 this.Success = false;
@@ -54,15 +54,15 @@ namespace IPodFixGui.ipodfix
         /// <summary>
         /// Public constructor.
         /// </summary>
-        /// <param name="SourceDir">source directory</param>
-        /// <param name="DestinationDir">destination directory</param>
-        public iPodFix(string SourceDir, string DestinationDir)
+        /// <param name="sourceDir">source directory</param>
+        /// <param name="destinationDir">destination directory</param>
+        public iPodFix(string sourceDir, string destinationDir)
         {
-            this.SourceDir = SourceDir;
-            m_MusicDir = Path.Combine(SourceDir, MUSIC_DIR);
-            this.DestinationDir = DestinationDir;
-            log.Info("Source: " + SourceDir);
-            log.Info("Destination: " + DestinationDir);
+            this.SourceDir = sourceDir;
+            _musicDir = Path.Combine(sourceDir, MusicDir);
+            this.DestinationDir = destinationDir;
+            Log.Info("Source: " + sourceDir);
+            Log.Info("Destination: " + destinationDir);
         }
 
         public iPodFix() : this("", "") { }
@@ -74,7 +74,7 @@ namespace IPodFixGui.ipodfix
         /// <returns>true if the source directory is valid, false otherwise</returns>
         public bool ValidSourceDir()
         {
-            return Directory.Exists(m_MusicDir);
+            return Directory.Exists(_musicDir);
         }
 
         /// <summary>
@@ -82,28 +82,28 @@ namespace IPodFixGui.ipodfix
         /// </summary>
         public void StartFixAsync()
         {
-            log.Info("Starting async fix");
-            m_MainThread = new BackgroundWorker();
-            m_MainThread.DoWork += new DoWorkEventHandler(DoFixInBackground);
-            m_MainThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(OnFixCompleted);
-            m_MainThread.RunWorkerAsync();
+            Log.Info("Starting async fix");
+            _mainThread = new BackgroundWorker();
+            _mainThread.DoWork += new DoWorkEventHandler(DoFixInBackground);
+            _mainThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(OnFixCompleted);
+            _mainThread.RunWorkerAsync();
         }
 
         /// <summary>
         /// Starts the iPod fix (synchronously).
         /// </summary>
         /// <returns></returns>
-        public iPodFixResult StartFix()
+        public IPodFixResult StartFix()
         {
-            iPodFixResult res = new iPodFixResult();
+            var res = new IPodFixResult();
             if (!ValidSourceDir())
             {
                 res.Success = false;
                 return res;
             }
-            foreach (string MusicDir in Directory.GetDirectories(m_MusicDir))
+            foreach (string musicDir in Directory.GetDirectories(_musicDir))
             {
-                FixDirectory(MusicDir);
+                FixDirectory(musicDir);
             }
             res.Success = true;
             return res;
@@ -116,31 +116,31 @@ namespace IPodFixGui.ipodfix
         /// <param name="e">event arguments</param>
         private void DoFixInBackground(object sender, DoWorkEventArgs e)
         {
-            string[] Dirs = Directory.GetDirectories(m_MusicDir);
-            m_Threads = new List<BackgroundWorker>(MAX_NUM_THREADS);
-            m_NumDirs = Dirs.Length;
-            m_NumDirsFixed = 0;
-            m_Lock = new object();
+            string[] Dirs = Directory.GetDirectories(_musicDir);
+            _threads = new List<BackgroundWorker>(MaxNumThreads);
+            _numDirs = Dirs.Length;
+            _numDirsFixed = 0;
+            _lock = new object();
             // init each background worker
-            for (int i = 0; i < MAX_NUM_THREADS; i++)
+            for (int i = 0; i < MaxNumThreads; i++)
             {
-                BackgroundWorker w = new BackgroundWorker();
+                var w = new BackgroundWorker();
                 w.DoWork += new DoWorkEventHandler(FixDirectoryInBackground);
                 w.RunWorkerCompleted += new RunWorkerCompletedEventHandler(OnFixDirectoryCompleted);
-                m_Threads.Add(w);
+                _threads.Add(w);
             }
 
             foreach (string Dir in Dirs)
             {
-                bool DirectoryThreadLaunched = false;
+                bool directoryThreadLaunched = false;
                 // wait for a thread to be available
-                while (!DirectoryThreadLaunched)
+                while (!directoryThreadLaunched)
                 {
-                    foreach (BackgroundWorker w in m_Threads)
+                    foreach (BackgroundWorker w in _threads)
                     {
                         if (w.IsBusy) { continue; }
                         w.RunWorkerAsync(Dir);
-                        DirectoryThreadLaunched = true;
+                        directoryThreadLaunched = true;
                         break;
                     }
                 }
@@ -163,8 +163,8 @@ namespace IPodFixGui.ipodfix
         /// <param name="e">event arguments</param>
         private void FixDirectoryInBackground(object sender, DoWorkEventArgs e)
         {
-            string DirectoryToFix = (string)e.Argument;
-            FixDirectory(DirectoryToFix);
+            var directoryToFix = (string)e.Argument;
+            FixDirectory(directoryToFix);
         }
 
         /// <summary>
@@ -174,14 +174,14 @@ namespace IPodFixGui.ipodfix
         /// <param name="e">event arguments</param>
         private void OnFixDirectoryCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            lock (m_Lock)
+            lock (_lock)
             {
-                m_NumDirsFixed++;
-                double percent = (((double)((double)m_NumDirsFixed / (double)m_NumDirs))) * 100.00;
-                ProgressEventArgs args = new ProgressEventArgs(false, percent);
+                _numDirsFixed++;
+                double percent = (((double)((double)_numDirsFixed / (double)_numDirs))) * 100.00;
+                var args = new ProgressEventArgs(false, percent);
                 if (OnUpdateStatus != null)
                 {
-                    if (m_NumDirsFixed == m_NumDirs)
+                    if (_numDirsFixed == _numDirs)
                     {
                         args.Completed = true;
                         args.PercentCompleted = 100.00;
@@ -198,12 +198,12 @@ namespace IPodFixGui.ipodfix
         /// <returns>path of the album artist directory</returns>
         private string CreateAlbumArtistDirectory(string artist)
         {
-            string AlbumArtistPath = Path.Combine(this.DestinationDir, artist);
-            if (!Directory.Exists(AlbumArtistPath))
+            string albumArtistPath = Path.Combine(this.DestinationDir, artist);
+            if (!Directory.Exists(albumArtistPath))
             {
-                Directory.CreateDirectory(AlbumArtistPath);
+                Directory.CreateDirectory(albumArtistPath);
             }
-            return AlbumArtistPath;
+            return albumArtistPath;
         }
 
         /// <summary>
@@ -226,49 +226,49 @@ namespace IPodFixGui.ipodfix
         /// Copies the source audio file to the destination directory using the TagLib.File
         /// to create the file name.
         /// </summary>
-        /// <param name="SourceFile">source audio file</param>
-        /// <param name="DestDir">destination directory</param>
-        /// <param name="TagFile">tag of the source file</param>
-        private void CreateAudioFile(string SourceFile, string DestDir, TagLib.File TagFile)
+        /// <param name="sourceFile">source audio file</param>
+        /// <param name="destDir">destination directory</param>
+        /// <param name="tagFile">tag of the source file</param>
+        private void CreateAudioFile(string sourceFile, string destDir, TagLib.File tagFile)
         {
-            string Ext = Path.GetExtension(SourceFile);
-            string Filename = Pad(TagFile.Tag.Track) + " - " + TagFile.Tag.Title + Ext;
-            string Dest = Path.Combine(DestDir, Filename);
-            if (!File.Exists(Dest))
+            string ext = Path.GetExtension(sourceFile);
+            string filename = Pad(tagFile.Tag.Track) + " - " + tagFile.Tag.Title + ext;
+            string dest = Path.Combine(destDir, filename);
+            if (!File.Exists(dest))
             {
-                File.Copy(SourceFile, Dest);
+                File.Copy(sourceFile, dest);
             }
         }
 
         /// <summary>
         /// Fixes the files in the specified directory.
         /// </summary>
-        /// <param name="DirectoryToFix">directory to fix</param>
-        private void FixDirectory(string DirectoryToFix)
+        /// <param name="directoryToFix">directory to fix</param>
+        private void FixDirectory(string directoryToFix)
         {
-            foreach (string AudioFile in Directory.GetFiles(DirectoryToFix))
+            foreach (string audioFile in Directory.GetFiles(directoryToFix))
             {
                 try
                 {
-                    TagLib.File TagFile = TagLib.File.Create(AudioFile);
+                    TagLib.File tagFile = TagLib.File.Create(audioFile);
                     // ensure an album artist exists
-                    if (String.IsNullOrEmpty(TagFile.Tag.FirstAlbumArtist) &&
-                        String.IsNullOrEmpty(TagFile.Tag.FirstPerformer)
+                    if (String.IsNullOrEmpty(tagFile.Tag.FirstAlbumArtist) &&
+                        String.IsNullOrEmpty(tagFile.Tag.FirstPerformer)
                         ) {
-                            log.Info("skipping" + AudioFile);
-                            Console.WriteLine("skipping" + AudioFile); 
+                            Log.Info("skipping" + audioFile);
+                            Console.WriteLine("skipping" + audioFile); 
                             continue; 
                     }
                     // create directories if necessary
-                    string artist = String.IsNullOrEmpty(TagFile.Tag.FirstPerformer) ? TagFile.Tag.FirstAlbumArtist : TagFile.Tag.FirstPerformer;
-                    string AlbumArtistDir = CreateAlbumArtistDirectory(artist);
-                    string AlbumDir = CreateAlbumDirectory(AlbumArtistDir, TagFile.Tag.Album);
+                    string artist = String.IsNullOrEmpty(tagFile.Tag.FirstPerformer) ? tagFile.Tag.FirstAlbumArtist : tagFile.Tag.FirstPerformer;
+                    string albumArtistDir = CreateAlbumArtistDirectory(artist);
+                    string albumDir = CreateAlbumDirectory(albumArtistDir, tagFile.Tag.Album);
                     // create the audio file
                     //log.Info("Creating " + AudioFile + " in " + AlbumDir);
-                    CreateAudioFile(AudioFile, AlbumDir, TagFile);
+                    CreateAudioFile(audioFile, albumDir, tagFile);
                 }
                 catch (Exception ex) {
-                    log.Error("Error processing " + AudioFile, ex);
+                    Log.Error("Error processing " + audioFile, ex);
                     continue; 
                 }
             }
@@ -279,6 +279,6 @@ namespace IPodFixGui.ipodfix
         /// </summary>
         /// <param name="n">number to pad</param>
         /// <returns>number as a string</returns>
-        private string Pad(uint n) { return n < 10 ? "0" + n : "" + n; }
+        private static string Pad(uint n) { return n < 10 ? "0" + n : "" + n; }
     }
 }
