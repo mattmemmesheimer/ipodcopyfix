@@ -39,12 +39,12 @@ namespace IPodFixGui.ipodfix
         /// <summary>
         /// Class containing info on the result of the fix operation.
         /// </summary>
-        public class IPodFixResult
+        public class PodFixResult
         {
             public bool Cancelled { get; set; }
             public bool Success { get; set; }
 
-            public IPodFixResult()
+            public PodFixResult()
             {
                 this.Cancelled = false;
                 this.Success = false;
@@ -93,9 +93,9 @@ namespace IPodFixGui.ipodfix
         /// Starts the iPod fix (synchronously).
         /// </summary>
         /// <returns></returns>
-        public IPodFixResult StartFix()
+        public PodFixResult StartFix()
         {
-            var res = new IPodFixResult();
+            var res = new PodFixResult();
             if (!ValidSourceDir())
             {
                 res.Success = false;
