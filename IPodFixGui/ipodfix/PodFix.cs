@@ -116,9 +116,9 @@ namespace IPodFixGui.ipodfix
         /// <param name="e">event arguments</param>
         private void DoFixInBackground(object sender, DoWorkEventArgs e)
         {
-            string[] Dirs = Directory.GetDirectories(_musicDir);
+            string[] dirs = Directory.GetDirectories(_musicDir);
             _threads = new List<BackgroundWorker>(MaxNumThreads);
-            _numDirs = Dirs.Length;
+            _numDirs = dirs.Length;
             _numDirsFixed = 0;
             _lock = new object();
             // init each background worker
@@ -130,16 +130,15 @@ namespace IPodFixGui.ipodfix
                 _threads.Add(w);
             }
 
-            foreach (string Dir in Dirs)
+            foreach (string dir in dirs)
             {
-                bool directoryThreadLaunched = false;
+                var directoryThreadLaunched = false;
                 // wait for a thread to be available
                 while (!directoryThreadLaunched)
                 {
-                    foreach (BackgroundWorker w in _threads)
+                    foreach (var thread in _threads.Where(w => !w.IsBusy))
                     {
-                        if (w.IsBusy) { continue; }
-                        w.RunWorkerAsync(Dir);
+                        thread.RunWorkerAsync(dir);
                         directoryThreadLaunched = true;
                         break;
                     }
@@ -209,17 +208,17 @@ namespace IPodFixGui.ipodfix
         /// <summary>
         /// Creates the album directory if it does not exist.
         /// </summary>
-        /// <param name="DestDir">directory to create the album directory in</param>
+        /// <param name="destDir">directory to create the album directory in</param>
         /// <param name="album">album name</param>
         /// <returns>path of the album directory</returns>
-        private string CreateAlbumDirectory(string DestDir, string album)
+        private string CreateAlbumDirectory(string destDir, string album)
         {
-            string AlbumPath = Path.Combine(DestDir, album);
-            if (!Directory.Exists(AlbumPath))
+            string albumPath = Path.Combine(destDir, album);
+            if (!Directory.Exists(albumPath))
             {
-                Directory.CreateDirectory(AlbumPath);
+                Directory.CreateDirectory(albumPath);
             }
-            return AlbumPath;
+            return albumPath;
         }
 
         /// <summary>
@@ -250,7 +249,7 @@ namespace IPodFixGui.ipodfix
             {
                 try
                 {
-                    TagLib.File tagFile = TagLib.File.Create(audioFile);
+                    var tagFile = TagLib.File.Create(audioFile);
                     // ensure an album artist exists
                     if (String.IsNullOrEmpty(tagFile.Tag.FirstAlbumArtist) &&
                         String.IsNullOrEmpty(tagFile.Tag.FirstPerformer)
