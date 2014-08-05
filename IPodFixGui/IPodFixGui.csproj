@@ -54,18 +54,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPodFixGui.cs">
+    <Compile Include="PodFixGui.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IPodFixGui.Designer.cs">
-      <DependentUpon>IPodFixGui.cs</DependentUpon>
+    <Compile Include="PodFixGui.Designer.cs">
+      <DependentUpon>PodFixGui.cs</DependentUpon>
     </Compile>
     <Compile Include="ipodfix\PodFix.cs" />
     <Compile Include="ipodfix\ProgressEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="IPodFixGui.resx">
-      <DependentUpon>IPodFixGui.cs</DependentUpon>
+    <EmbeddedResource Include="PodFixGui.resx">
+      <DependentUpon>PodFixGui.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

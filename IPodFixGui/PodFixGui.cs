@@ -11,12 +11,12 @@ using IPodFixGui.ipodfix;
 
 namespace IPodFixGui
 {
-    public partial class IPodFixGui : Form
+    public partial class PodFixGui : Form
     {
         private PodFix m_Fixer;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IPodFixGui()
+        public PodFixGui()
         {
             InitializeComponent();
             m_Fixer = new PodFix();

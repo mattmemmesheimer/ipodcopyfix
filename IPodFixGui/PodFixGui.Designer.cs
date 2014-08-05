@@ -1,6 +1,6 @@
 ﻿namespace IPodFixGui
 {
-    partial class IPodFixGui
+    partial class PodFixGui
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IPodFixGui));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PodFixGui));
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.sourceDirLabel = new System.Windows.Forms.Label();
             this.sourceDirInput = new System.Windows.Forms.TextBox();
@@ -164,7 +164,7 @@
             this.openButton.Visible = false;
             this.openButton.Click += new System.EventHandler(this.openButton_Click);
             // 
-            // IPodFixGui
+            // PodFixGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

@@ -17,7 +17,7 @@ namespace IPodFixGui
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new IPodFixGui());
+            Application.Run(new PodFixGui());
         }
     }
 }
