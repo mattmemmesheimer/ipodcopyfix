@@ -13,6 +13,7 @@ namespace IPodFixGui.ipodfix
         // constants
         public const string MUSIC_DIR = "Music";
         public const int MAX_NUM_THREADS = 25;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         // members
         public string SourceDir
         { 
@@ -60,6 +61,8 @@ namespace IPodFixGui.ipodfix
             this.SourceDir = SourceDir;
             m_MusicDir = Path.Combine(SourceDir, MUSIC_DIR);
             this.DestinationDir = DestinationDir;
+            log.Info("Source: " + SourceDir);
+            log.Info("Destination: " + DestinationDir);
         }
 
         public iPodFix() : this("", "") { }
@@ -79,6 +82,7 @@ namespace IPodFixGui.ipodfix
         /// </summary>
         public void StartFixAsync()
         {
+            log.Info("Starting async fix");
             m_MainThread = new BackgroundWorker();
             m_MainThread.DoWork += new DoWorkEventHandler(DoFixInBackground);
             m_MainThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(OnFixCompleted);
@@ -250,15 +254,23 @@ namespace IPodFixGui.ipodfix
                     // ensure an album artist exists
                     if (String.IsNullOrEmpty(TagFile.Tag.FirstAlbumArtist) &&
                         String.IsNullOrEmpty(TagFile.Tag.FirstPerformer)
-                        ) { Console.WriteLine("skipping" + AudioFile); continue; }
+                        ) {
+                            log.Info("skipping" + AudioFile);
+                            Console.WriteLine("skipping" + AudioFile); 
+                            continue; 
+                    }
                     // create directories if necessary
                     string artist = String.IsNullOrEmpty(TagFile.Tag.FirstPerformer) ? TagFile.Tag.FirstAlbumArtist : TagFile.Tag.FirstPerformer;
                     string AlbumArtistDir = CreateAlbumArtistDirectory(artist);
                     string AlbumDir = CreateAlbumDirectory(AlbumArtistDir, TagFile.Tag.Album);
                     // create the audio file
+                    //log.Info("Creating " + AudioFile + " in " + AlbumDir);
                     CreateAudioFile(AudioFile, AlbumDir, TagFile);
                 }
-                catch (Exception ex) { continue; }
+                catch (Exception ex) {
+                    log.Error("Error processing " + AudioFile, ex);
+                    continue; 
+                }
             }
         }
 

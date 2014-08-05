@@ -40,6 +40,7 @@
             this.fixProgressBar = new System.Windows.Forms.ProgressBar();
             this.cancelButton = new System.Windows.Forms.Button();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.openButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // sourceDirLabel
@@ -151,11 +152,24 @@
             this.statusLabel.Text = "Select source and destination directories.";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // openButton
+            // 
+            this.openButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.openButton.Location = new System.Drawing.Point(174, 78);
+            this.openButton.Name = "openButton";
+            this.openButton.Size = new System.Drawing.Size(98, 23);
+            this.openButton.TabIndex = 10;
+            this.openButton.Text = "Open Directory";
+            this.openButton.UseVisualStyleBackColor = true;
+            this.openButton.Visible = false;
+            this.openButton.Click += new System.EventHandler(this.openButton_Click);
+            // 
             // IPodFixGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(370, 163);
+            this.Controls.Add(this.openButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.fixProgressBar);
@@ -188,6 +202,7 @@
         private System.Windows.Forms.ProgressBar fixProgressBar;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.Button openButton;
     }
 }
 

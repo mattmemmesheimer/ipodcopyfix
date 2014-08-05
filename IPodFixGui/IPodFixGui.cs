@@ -14,6 +14,7 @@ namespace IPodFixGui
     public partial class IPodFixGui : Form
     {
         private iPodFix m_Fixer;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public IPodFixGui()
         {
@@ -39,6 +40,7 @@ namespace IPodFixGui
                 MessageBox.Show("Invalid source directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 folderBrowserDialog.SelectedPath = "";
             }
+            
         }
 
         /// <summary>
@@ -63,6 +65,7 @@ namespace IPodFixGui
             if (Empty || SelectDir)
             {
                 destinationDirInput.Text = folderBrowserDialog.SelectedPath;
+                m_Fixer.DestinationDir = destinationDirInput.Text;
             }
             else 
             {
@@ -88,6 +91,8 @@ namespace IPodFixGui
             SetButtonsEnabled(false);
             statusLabel.Text = "Performing fix...";
             m_Fixer.StartFixAsync();
+            log.Info("Performing fix.");
+            
         }
 
         /// <summary>
@@ -102,6 +107,7 @@ namespace IPodFixGui
                 if (e.Completed)
                 {
                     SetButtonsEnabled(true);
+                    SetButtonsVisible(true);
                     val = 100;
                     statusLabel.Text = "Fix completed!";
                 }
@@ -134,6 +140,17 @@ namespace IPodFixGui
             sourceDirButton.Enabled = enabled;
             destinationDirButton.Enabled = enabled;
             fixButton.Enabled = enabled;
+        }
+
+        public void SetButtonsVisible(bool visible)
+        {
+            openButton.Visible = visible;
+        }
+
+        private void openButton_Click(object sender, EventArgs e)
+        {
+            string destinationPath = destinationDirInput.Text;
+            System.Diagnostics.Process.Start("explorer.exe", destinationPath);
         }
     }
 }
