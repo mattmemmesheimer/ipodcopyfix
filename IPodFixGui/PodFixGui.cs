@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using IPodFixGui.ipodfix;
+using IPodFixGui.Properties;
 
 namespace IPodFixGui
 {
@@ -37,7 +38,7 @@ namespace IPodFixGui
             }
             else
             {
-                MessageBox.Show("Invalid source directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorInvalidSourceDirectory, Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 folderBrowserDialog.SelectedPath = "";
             }
             
@@ -56,7 +57,7 @@ namespace IPodFixGui
             bool selectDir = false;
             if (!empty)
             {
-                DialogResult res = MessageBox.Show("Destination directory is not empty.  Continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                DialogResult res = MessageBox.Show(Resources.WarningDestinationDirectoryNotEmpty, Resources.TitleWarning, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (res == DialogResult.OK)
                 {
                     selectDir = true;
@@ -89,7 +90,7 @@ namespace IPodFixGui
             }
             _podFix.OnUpdateStatus += new PodFix.StatusUpdateHandler(m_Fixer_OnUpdateStatus);
             SetButtonsEnabled(false);
-            statusLabel.Text = "Performing fix...";
+            statusLabel.Text = Resources.PerformingFix;
             _podFix.StartFixAsync();
             log.Info("Performing fix.");
             
@@ -109,7 +110,7 @@ namespace IPodFixGui
                     SetButtonsEnabled(true);
                     SetButtonsVisible(true);
                     val = 100;
-                    statusLabel.Text = "Fix completed!";
+                    statusLabel.Text = Resources.FixCompleted;
                 }
                 else
                 {
