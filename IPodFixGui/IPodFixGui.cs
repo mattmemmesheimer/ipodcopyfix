@@ -13,13 +13,13 @@ namespace IPodFixGui
 {
     public partial class IPodFixGui : Form
     {
-        private iPodFix m_Fixer;
+        private PodFix m_Fixer;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public IPodFixGui()
         {
             InitializeComponent();
-            m_Fixer = new iPodFix();
+            m_Fixer = new PodFix();
         }
 
         /// <summary>
@@ -80,14 +80,14 @@ namespace IPodFixGui
         /// <param name="e">event arguments</param>
         private void fixButton_Click(object sender, EventArgs e)
         {
-            //m_Fixer = new iPodFix(sourceDirInput.Text, destinationDirInput.Text);
-            //m_Fixer = new iPodFix("E:\\my-ipod-backup", "R:\\ipod");
+            //m_Fixer = new PodFix(sourceDirInput.Text, destinationDirInput.Text);
+            //m_Fixer = new PodFix("E:\\my-ipod-backup", "R:\\ipod");
             if (!ValidInput() || !m_Fixer.ValidSourceDir())
             {
                 //MessageBox.Show("Invalid source and/or destination directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //return;
             }
-            m_Fixer.OnUpdateStatus += new iPodFix.StatusUpdateHandler(m_Fixer_OnUpdateStatus);
+            m_Fixer.OnUpdateStatus += new PodFix.StatusUpdateHandler(m_Fixer_OnUpdateStatus);
             SetButtonsEnabled(false);
             statusLabel.Text = "Performing fix...";
             m_Fixer.StartFixAsync();

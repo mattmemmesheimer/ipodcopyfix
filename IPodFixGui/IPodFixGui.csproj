@@ -60,7 +60,7 @@
     <Compile Include="IPodFixGui.Designer.cs">
       <DependentUpon>IPodFixGui.cs</DependentUpon>
     </Compile>
-    <Compile Include="ipodfix\iPodFix.cs" />
+    <Compile Include="ipodfix\PodFix.cs" />
     <Compile Include="ipodfix\ProgressEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
