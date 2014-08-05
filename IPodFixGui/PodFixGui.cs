@@ -13,13 +13,13 @@ namespace IPodFixGui
 {
     public partial class PodFixGui : Form
     {
-        private PodFix m_Fixer;
+        private PodFix _podFix;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public PodFixGui()
         {
             InitializeComponent();
-            m_Fixer = new PodFix();
+            _podFix = new PodFix();
         }
 
         /// <summary>
@@ -30,8 +30,8 @@ namespace IPodFixGui
         private void sourceDirButton_Click(object sender, EventArgs e)
         {
             DialogResult res = folderBrowserDialog.ShowDialog();
-            m_Fixer.SourceDir = folderBrowserDialog.SelectedPath;
-            if (m_Fixer.ValidSourceDir())
+            _podFix.SourceDir = folderBrowserDialog.SelectedPath;
+            if (_podFix.ValidSourceDir())
             {
                 sourceDirInput.Text = folderBrowserDialog.SelectedPath;
             }
@@ -51,21 +51,21 @@ namespace IPodFixGui
         private void destinationDirButton_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.ShowDialog();
-            bool Empty = (Directory.GetFiles(folderBrowserDialog.SelectedPath).Length == 0);
-            Empty = Empty && (Directory.GetDirectories(folderBrowserDialog.SelectedPath).Length == 0);
-            bool SelectDir = false;
-            if (!Empty)
+            bool empty = (Directory.GetFiles(folderBrowserDialog.SelectedPath).Length == 0);
+            empty = empty && (Directory.GetDirectories(folderBrowserDialog.SelectedPath).Length == 0);
+            bool selectDir = false;
+            if (!empty)
             {
                 DialogResult res = MessageBox.Show("Destination directory is not empty.  Continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (res == DialogResult.OK)
                 {
-                    SelectDir = true;
+                    selectDir = true;
                 }
             }
-            if (Empty || SelectDir)
+            if (empty || selectDir)
             {
                 destinationDirInput.Text = folderBrowserDialog.SelectedPath;
-                m_Fixer.DestinationDir = destinationDirInput.Text;
+                _podFix.DestinationDir = destinationDirInput.Text;
             }
             else 
             {
@@ -80,17 +80,17 @@ namespace IPodFixGui
         /// <param name="e">event arguments</param>
         private void fixButton_Click(object sender, EventArgs e)
         {
-            //m_Fixer = new PodFix(sourceDirInput.Text, destinationDirInput.Text);
-            //m_Fixer = new PodFix("E:\\my-ipod-backup", "R:\\ipod");
-            if (!ValidInput() || !m_Fixer.ValidSourceDir())
+            //_podFix = new PodFix(sourceDirInput.Text, destinationDirInput.Text);
+            //_podFix = new PodFix("E:\\my-ipod-backup", "R:\\ipod");
+            if (!ValidInput() || !_podFix.ValidSourceDir())
             {
                 //MessageBox.Show("Invalid source and/or destination directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //return;
             }
-            m_Fixer.OnUpdateStatus += new PodFix.StatusUpdateHandler(m_Fixer_OnUpdateStatus);
+            _podFix.OnUpdateStatus += new PodFix.StatusUpdateHandler(m_Fixer_OnUpdateStatus);
             SetButtonsEnabled(false);
             statusLabel.Text = "Performing fix...";
-            m_Fixer.StartFixAsync();
+            _podFix.StartFixAsync();
             log.Info("Performing fix.");
             
         }
@@ -142,7 +142,7 @@ namespace IPodFixGui
             fixButton.Enabled = enabled;
         }
 
-        public void SetButtonsVisible(bool visible)
+        private void SetButtonsVisible(bool visible)
         {
             openButton.Visible = visible;
         }
