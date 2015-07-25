@@ -94,6 +94,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncSynchronization\AsyncLock.cs" />
+    <Compile Include="AsyncSynchronization\AsyncSemaphore.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -139,6 +141,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IpodCopyFix.Common\IpodCopyFix.Common.csproj">
+      <Project>{4ee47a64-643b-45ad-895c-277e8d097626}</Project>
+      <Name>IpodCopyFix.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
