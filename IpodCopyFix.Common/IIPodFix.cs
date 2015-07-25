@@ -7,7 +7,6 @@ namespace IpodCopyFix.Common
     /// </summary>
     public interface IIPodFix
     {
-        Task StartAsync(string[] directories);
-        Task FixDirectoryAsync(string path);
+        Task StartAsync(string[] directories, string destinationPath);
     }
 }

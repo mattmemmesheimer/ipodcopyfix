@@ -18,15 +18,16 @@ namespace IpodCopyFix.Common
             _lock = new AsyncLock();
         }
 
-        public async Task StartAsync(string[] directories)
+        public async Task StartAsync(string[] directories, string destinationPath)
         {
             if (_running)
             {
                 throw new InvalidOperationException(@"already running");
             }
+            _destinationPath = destinationPath;
             _running = true;
             await Task.Factory.StartNew(() =>
-            { Parallel.ForEach(directories, path => FixDirectoryAsync(path)); });
+                { Parallel.ForEach(directories, path => FixDirectoryAsync(path)); });
             _running = false;
         }
 
@@ -41,6 +42,11 @@ namespace IpodCopyFix.Common
                     using (await _lock.LockAsync())
                     {
                         // create directory if it doesn't already exist
+                        var dir = Path.Combine(_destinationPath, tag.Tag.FirstAlbumArtist);
+                        if (!Directory.Exists(dir))
+                        {
+                            Directory.CreateDirectory(dir);
+                        }
                     }
                 }
             }
@@ -50,6 +56,7 @@ namespace IpodCopyFix.Common
 
         private readonly AsyncLock _lock;
         private bool _running;
+        private string _destinationPath;
 
         #endregion
     }

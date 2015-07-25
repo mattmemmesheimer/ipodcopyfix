@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using IpodCopyFix.Common;
+using IpodCopyFix.Wpf.Commanding;
 using IpodCopyFix.Wpf.Services;
 using Microsoft.Practices.Prism.Commands;
 
@@ -23,6 +24,11 @@ namespace IpodCopyFix.Wpf.ViewModels
         /// Command to choose the destination directory.
         /// </summary>
         public ICommand ChooseDestinationCommand { get; set; }
+
+        /// <summary>
+        /// Command to start the fix process.
+        /// </summary>
+        public ICommand StartCommand { get; set; }
 
         #endregion
 
@@ -68,6 +74,7 @@ namespace IpodCopyFix.Wpf.ViewModels
             _iPodFix = iPodFix;
             ChooseSourceCommand = new DelegateCommand(ChooseSourcePath);
             ChooseDestinationCommand = new DelegateCommand(ChooseDestinationPath);
+            StartCommand = new AwaitableDelegateCommand(StartAsync);
         }
 
         private void ChooseSourcePath()
@@ -91,7 +98,7 @@ namespace IpodCopyFix.Wpf.ViewModels
 
         private async Task StartAsync()
         {
-            await _iPodFix.StartAsync(SourceDirectories);
+            await _iPodFix.StartAsync(SourceDirectories, DestinationPath);
         }
 
         #region Fields

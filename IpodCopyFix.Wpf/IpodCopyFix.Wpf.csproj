@@ -94,6 +94,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commanding\AwaitableDelegateCommand.cs" />
+    <Compile Include="Commanding\IAsyncCommand.cs" />
+    <Compile Include="Commanding\IRaiseCanExecuteChanged.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

@@ -34,7 +34,8 @@
             
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"  />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
                 <TextBox
@@ -44,6 +45,11 @@
                     Width="120"
                     Content="Choose destination"
                     Command="{Binding ChooseDestinationCommand}" />
+                <Button 
+                    Grid.Row="2"
+                    Width="120"
+                    Content="Start"
+                    Command="{Binding StartCommand}" />
             </Grid>
             
         </Grid>
