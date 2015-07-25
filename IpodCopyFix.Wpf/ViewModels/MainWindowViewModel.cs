@@ -1,4 +1,6 @@
-﻿namespace IpodCopyFix.Wpf.ViewModels
+﻿using IpodCopyFix.Wpf.Services;
+
+namespace IpodCopyFix.Wpf.ViewModels
 {
     /// <summary>
     /// Main window view model.
@@ -8,6 +10,17 @@
         #region Properties
 
 
+
+        #endregion
+
+        public MainWindowViewModel(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
+
+        #region Fields
+
+        private readonly IFileService _fileService;
 
         #endregion
     }

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using IpodCopyFix.Wpf.Services;
 using Microsoft.Practices.Unity;
 
 namespace IpodCopyFix.Wpf
@@ -21,7 +22,7 @@ namespace IpodCopyFix.Wpf
         private IUnityContainer ConfigureContainer()
         {
             var container = new UnityContainer();
-
+            container.RegisterType<IFileService, FileService>();
             return container;
         }
 
