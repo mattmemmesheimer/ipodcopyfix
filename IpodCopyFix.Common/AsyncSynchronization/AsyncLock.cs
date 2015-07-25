@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace IpodCopyFix.Wpf.AsyncSynchronization
+namespace IpodCopyFix.Common.AsyncSynchronization
 {
     /// <summary>
     /// A lock that can be used with the async/await keywords.
@@ -33,7 +33,7 @@ namespace IpodCopyFix.Wpf.AsyncSynchronization
             var wait = _semaphore.WaitAsync();
             return wait.IsCompleted
                 ? _releaser
-                : wait.ContinueWith((_, state) => new Releaser((AsyncLock) state), this,
+                : wait.ContinueWith((_, state) => new Releaser((AsyncLock)state), this,
                     CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously,
                     TaskScheduler.Default);
         }

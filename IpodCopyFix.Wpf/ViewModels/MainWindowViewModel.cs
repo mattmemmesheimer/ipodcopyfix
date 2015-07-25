@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using IpodCopyFix.Common;
 using IpodCopyFix.Wpf.Services;
 using Microsoft.Practices.Prism.Commands;
 
@@ -41,9 +43,11 @@ namespace IpodCopyFix.Wpf.ViewModels
         /// Constructor.
         /// </summary>
         /// <param name="fileService">File service to use.</param>
-        public MainWindowViewModel(IFileService fileService)
+        /// <param name="iPodFix">iPod fix to use.</param>
+        public MainWindowViewModel(IFileService fileService, IIPodFix iPodFix)
         {
             _fileService = fileService;
+            _iPodFix = iPodFix;
             ChooseSourceCommand = new DelegateCommand(OpenFolder);
         }
 
@@ -57,8 +61,14 @@ namespace IpodCopyFix.Wpf.ViewModels
             }
         }
 
+        private async Task StartAsync()
+        {
+            await _iPodFix.StartAsync(SourceDirectories);
+        }
+
         #region Fields
 
+        private readonly IIPodFix _iPodFix;
         private readonly IFileService _fileService;
         private string _sourcePath;
         private string[] _sourceDirectories;

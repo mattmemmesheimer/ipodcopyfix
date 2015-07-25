@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IpodCopyFix.Wpf.AsyncSynchronization
+namespace IpodCopyFix.Common.AsyncSynchronization
 {
     /// <summary>
     /// A sempahore that can be used with the async/await keywords.

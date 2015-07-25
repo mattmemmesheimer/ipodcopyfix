@@ -94,8 +94,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AsyncSynchronization\AsyncLock.cs" />
-    <Compile Include="AsyncSynchronization\AsyncSemaphore.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
