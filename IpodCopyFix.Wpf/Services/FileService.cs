@@ -10,7 +10,9 @@ namespace IpodCopyFix.Wpf.Services
         /// <see cref="IFileService.OpenFileDialog"/>
         public string OpenFileDialog(string initialPath)
         {
-            throw new System.NotImplementedException();
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            var result = dialog.ShowDialog();
+            return result == true ? dialog.FileName : null;
         }
 
         /// <see cref="IFileService.OpenFile"/>
