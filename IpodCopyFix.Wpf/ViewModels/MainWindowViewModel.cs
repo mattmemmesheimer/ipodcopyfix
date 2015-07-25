@@ -22,11 +22,7 @@ namespace IpodCopyFix.Wpf.ViewModels
         public string SourcePath
         {
             get { return _sourcePath; }
-            set
-            {
-                _sourcePath = value;
-                OnPropertyChanged();
-            }
+            set { SetProperty(ref _sourcePath, value); }
         }
 
         #endregion
