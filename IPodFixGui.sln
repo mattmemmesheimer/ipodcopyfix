@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpodCopyFix.Wpf", "IpodCopyFix.Wpf\IpodCopyFix.Wpf.csproj", "{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpodCopyFix.Common", "IpodCopyFix.Common\IpodCopyFix.Common.csproj", "{4EE47A64-643B-45AD-895C-277E8D097626}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,16 @@ Global
 		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|x86.ActiveCfg = Release|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4EE47A64-643B-45AD-895C-277E8D097626}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
