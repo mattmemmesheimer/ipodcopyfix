@@ -12,12 +12,21 @@ namespace IpodCopyFix.Wpf.ViewModels
     /// </summary>
     public class MainWindowViewModel : ViewModelBase
     {
-        #region Properties
+        #region Commands
 
         /// <summary>
         /// Command to choose the source directory.
         /// </summary>
         public ICommand ChooseSourceCommand { get; set; }
+
+        /// <summary>
+        /// Command to choose the destination directory.
+        /// </summary>
+        public ICommand ChooseDestinationCommand { get; set; }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Source path.
@@ -37,6 +46,15 @@ namespace IpodCopyFix.Wpf.ViewModels
             set { SetProperty(ref _sourceDirectories, value); } 
         }
 
+        /// <summary>
+        /// Destination path.
+        /// </summary>
+        public string DestinationPath
+        {
+            get { return _destinationPath; }
+            set { SetProperty(ref _destinationPath, value); }
+        }
+
         #endregion
 
         /// <summary>
@@ -48,16 +66,26 @@ namespace IpodCopyFix.Wpf.ViewModels
         {
             _fileService = fileService;
             _iPodFix = iPodFix;
-            ChooseSourceCommand = new DelegateCommand(OpenFolder);
+            ChooseSourceCommand = new DelegateCommand(ChooseSourcePath);
+            ChooseDestinationCommand = new DelegateCommand(ChooseDestinationPath);
         }
 
-        private void OpenFolder()
+        private void ChooseSourcePath()
         {
             var path = _fileService.OpenFolderDialog();
             if (path != string.Empty)
             {
                 SourcePath = path;
                 SourceDirectories = Directory.GetDirectories(SourcePath);
+            }
+        }
+
+        private void ChooseDestinationPath()
+        {
+            var path = _fileService.OpenFolderDialog();
+            if (path != string.Empty)
+            {
+                DestinationPath = path;
             }
         }
 
@@ -72,6 +100,7 @@ namespace IpodCopyFix.Wpf.ViewModels
         private readonly IFileService _fileService;
         private string _sourcePath;
         private string[] _sourceDirectories;
+        private string _destinationPath;
 
         #endregion
     }

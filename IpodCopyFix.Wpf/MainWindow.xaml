@@ -21,7 +21,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBox
-                    Text="{Binding SourcePath}" />
+                    Text="{Binding SourcePath, Mode=TwoWay}" />
                 <Button 
                     Grid.Row="1"
                     Width="100"
@@ -30,6 +30,20 @@
                 <ListBox
                     Grid.Row="2"
                     ItemsSource="{Binding SourceDirectories}" />
+            </Grid>
+            
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"  />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <TextBox
+                    Text="{Binding DestinationPath, Mode=TwoWay}" />
+                <Button 
+                    Grid.Row="1"
+                    Width="120"
+                    Content="Choose destination"
+                    Command="{Binding ChooseDestinationCommand}" />
             </Grid>
             
         </Grid>
