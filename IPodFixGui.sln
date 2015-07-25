@@ -1,18 +1,30 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPodFixGui", "IPodFixGui\IPodFixGui.csproj", "{60B78768-A847-4A1E-B208-F24A38DDCECE}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpodCopyFix.Wpf", "IpodCopyFix.Wpf\IpodCopyFix.Wpf.csproj", "{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{60B78768-A847-4A1E-B208-F24A38DDCECE}.Debug|x86.ActiveCfg = Debug|x86
-		{60B78768-A847-4A1E-B208-F24A38DDCECE}.Debug|x86.Build.0 = Debug|x86
-		{60B78768-A847-4A1E-B208-F24A38DDCECE}.Release|x86.ActiveCfg = Release|x86
-		{60B78768-A847-4A1E-B208-F24A38DDCECE}.Release|x86.Build.0 = Release|x86
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{92B2E2ED-FA63-483A-B85C-1FBDBCD2FECD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
