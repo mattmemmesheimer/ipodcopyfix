@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
+using System.Windows.Forms;
 
 namespace IpodCopyFix.Wpf.Services
 {
@@ -13,6 +14,14 @@ namespace IpodCopyFix.Wpf.Services
             var dialog = new Microsoft.Win32.OpenFileDialog();
             var result = dialog.ShowDialog();
             return result == true ? dialog.FileName : null;
+        }
+
+        /// <see cref="IFileService.OpenFolderDialog"/>
+        public string OpenFolderDialog()
+        {
+            var dialog = new FolderBrowserDialog();
+            dialog.ShowDialog();
+            return dialog.SelectedPath;
         }
 
         /// <see cref="IFileService.OpenFile"/>

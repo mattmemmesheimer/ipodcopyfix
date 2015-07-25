@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.IO;
+using System.Windows.Input;
 using IpodCopyFix.Wpf.Services;
 using Microsoft.Practices.Prism.Commands;
 
@@ -25,6 +26,15 @@ namespace IpodCopyFix.Wpf.ViewModels
             set { SetProperty(ref _sourcePath, value); }
         }
 
+        /// <summary>
+        /// Directories in the source directory.
+        /// </summary>
+        public string[] SourceDirectories 
+        { 
+            get { return _sourceDirectories; } 
+            set { SetProperty(ref _sourceDirectories, value); } 
+        }
+
         #endregion
 
         /// <summary>
@@ -34,19 +44,24 @@ namespace IpodCopyFix.Wpf.ViewModels
         public MainWindowViewModel(IFileService fileService)
         {
             _fileService = fileService;
-
-            ChooseSourceCommand = new DelegateCommand(OpenFile);
+            ChooseSourceCommand = new DelegateCommand(OpenFolder);
         }
 
-        private void OpenFile()
+        private void OpenFolder()
         {
-            SourcePath = _fileService.OpenFileDialog();
+            var path = _fileService.OpenFolderDialog();
+            if (path != string.Empty)
+            {
+                SourcePath = path;
+                SourceDirectories = Directory.GetDirectories(SourcePath);
+            }
         }
 
         #region Fields
 
         private readonly IFileService _fileService;
         private string _sourcePath;
+        private string[] _sourceDirectories;
 
         #endregion
     }

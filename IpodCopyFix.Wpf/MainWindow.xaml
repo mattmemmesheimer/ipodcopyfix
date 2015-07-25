@@ -15,15 +15,21 @@
             </Grid.ColumnDefinitions>
             
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <TextBox
-                    Height="30"
-                    VerticalAlignment="Top"
                     Text="{Binding SourcePath}" />
                 <Button 
+                    Grid.Row="1"
                     Width="100"
-                    Height="30"
                     Content="Choose source"
                     Command="{Binding ChooseSourceCommand}" />
+                <ListBox
+                    Grid.Row="2"
+                    ItemsSource="{Binding SourceDirectories}" />
             </Grid>
             
         </Grid>
