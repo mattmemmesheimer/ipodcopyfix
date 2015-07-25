@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Microsoft.Practices.Unity;
 
 namespace IpodCopyFix.Wpf
 {
@@ -11,10 +12,23 @@ namespace IpodCopyFix.Wpf
         {
             base.OnStartup(e);
 
-            var mainWindow = new MainWindow();
+            _container = ConfigureContainer();
 
-            Current.MainWindow = mainWindow;
+            Current.MainWindow = _container.Resolve<MainWindow>();
             Current.MainWindow.Show();
         }
+
+        private IUnityContainer ConfigureContainer()
+        {
+            var container = new UnityContainer();
+
+            return container;
+        }
+
+        #region Fields
+
+        private IUnityContainer _container;
+
+        #endregion
     }
 }
