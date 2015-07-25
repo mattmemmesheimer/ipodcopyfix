@@ -10,9 +10,8 @@ namespace IpodCopyFix.Wpf.Services
         /// <summary>
         /// Displays an open file dialog.
         /// </summary>
-        /// <param name="initialPath">Initial path.</param>
         /// <returns>The selected file path.</returns>
-        string OpenFileDialog(string initialPath);
+        string OpenFileDialog();
 
         /// <summary>
         /// Opens a file stream.

@@ -8,7 +8,7 @@ namespace IpodCopyFix.Wpf.Services
     public class FileService : IFileService
     {
         /// <see cref="IFileService.OpenFileDialog"/>
-        public string OpenFileDialog(string initialPath)
+        public string OpenFileDialog()
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
             var result = dialog.ShowDialog();
