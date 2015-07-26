@@ -5,7 +5,7 @@ namespace IpodCopyFix.Common
     /// <summary>
     /// Defines an interface for fixing iPod music directories.
     /// </summary>
-    public interface IIPodFix
+    public interface IIpodFix
     {
         /// <summary>
         /// Starts to asynchronously process the specified directories.

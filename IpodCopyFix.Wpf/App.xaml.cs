@@ -24,7 +24,7 @@ namespace IpodCopyFix.Wpf
         {
             var container = new UnityContainer();
             container.RegisterType<IFileService, FileService>();
-            container.RegisterType<IIPodFix, IpodFix>();
+            container.RegisterType<IIpodFix, IpodFix>();
             return container;
         }
 

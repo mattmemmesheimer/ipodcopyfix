@@ -8,9 +8,9 @@ using File = TagLib.File;
 namespace IpodCopyFix.Common
 {
     /// <summary>
-    /// Concrete implementation of <see cref="IIPodFix"/>.
+    /// Concrete implementation of <see cref="IIpodFix"/>.
     /// </summary>
-    public class IpodFix :IIPodFix
+    public class IpodFix :IIpodFix
     {
         /// <summary>
         /// Constructs a new <see cref="IpodFix"/>.
@@ -20,7 +20,7 @@ namespace IpodCopyFix.Common
             _lock = new AsyncLock();
         }
 
-        /// <see cref="IIPodFix.StartAsync"/>
+        /// <see cref="IIpodFix.StartAsync"/>
         public async Task StartAsync(string[] directories, string destinationPath)
         {
             if (_running)

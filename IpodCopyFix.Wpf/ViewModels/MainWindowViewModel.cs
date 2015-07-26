@@ -67,11 +67,11 @@ namespace IpodCopyFix.Wpf.ViewModels
         /// Constructor.
         /// </summary>
         /// <param name="fileService">File service to use.</param>
-        /// <param name="iPodFix">iPod fix to use.</param>
-        public MainWindowViewModel(IFileService fileService, IIPodFix iPodFix)
+        /// <param name="ipodFix">iPod fix to use.</param>
+        public MainWindowViewModel(IFileService fileService, IIpodFix ipodFix)
         {
             _fileService = fileService;
-            _iPodFix = iPodFix;
+            _ipodFix = ipodFix;
             ChooseSourceCommand = new DelegateCommand(ChooseSourcePath);
             ChooseDestinationCommand = new DelegateCommand(ChooseDestinationPath);
             StartCommand = new AwaitableDelegateCommand(StartAsync);
@@ -98,12 +98,12 @@ namespace IpodCopyFix.Wpf.ViewModels
 
         private async Task StartAsync()
         {
-            await _iPodFix.StartAsync(SourceDirectories, DestinationPath);
+            await _ipodFix.StartAsync(SourceDirectories, DestinationPath);
         }
 
         #region Fields
 
-        private readonly IIPodFix _iPodFix;
+        private readonly IIpodFix _ipodFix;
         private readonly IFileService _fileService;
         private string _sourcePath;
         private string[] _sourceDirectories;
