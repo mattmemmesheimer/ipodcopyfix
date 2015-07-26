@@ -50,6 +50,7 @@
     <Compile Include="IIPodFix.cs" />
     <Compile Include="IpodFix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
