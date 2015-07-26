@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using IpodCopyFix.Common.AsyncSynchronization;
 using IpodCopyFix.Common.Util;
+using log4net;
 using File = TagLib.File;
 
 namespace IpodCopyFix.Common
@@ -18,6 +19,8 @@ namespace IpodCopyFix.Common
         public IpodFix()
         {
             _lock = new AsyncLock();
+
+            Logger.DebugFormat("Creating iPodFix instance.");
         }
 
         /// <see cref="IIpodFix.StartAsync"/>
@@ -29,6 +32,9 @@ namespace IpodCopyFix.Common
             }
             _destinationPath = destinationPath;
 
+            Logger.DebugFormat("Starting iPod fix on {0} directories to destination {1}.",
+                directories.Length, destinationPath);
+
             _running = true;
             await Task.Run(() => Parallel.ForEach(directories, FixDirectoryAsync));
             _running = false;
@@ -37,6 +43,8 @@ namespace IpodCopyFix.Common
         private async void FixDirectoryAsync(string path)
         {
             var files = Directory.GetFiles(path);
+            Logger.DebugFormat("Starting fix on directory {0} ({1} file(s)).", path, files.Length);
+            int skipped = 0;
             foreach (var file in files)
             {
                 var tag = File.Create(file);
@@ -54,10 +62,19 @@ namespace IpodCopyFix.Common
                         }
                     }
                 }
+                else
+                {
+                    skipped++;
+                    Logger.DebugFormat("Skipping blank FirstArtist.");
+                }
             }
+            Logger.DebugFormat("Finished fixing directory {0}.  Skipped {1} of {2} files.", path,
+                skipped, files.Length);
         }
 
         #region Fields
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (IpodFix));
 
         private readonly AsyncLock _lock;
         private bool _running;

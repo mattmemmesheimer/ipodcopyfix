@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using IpodCopyFix.Common;
-using IpodCopyFix.Wpf.Services;
 using Microsoft.Practices.Unity;
 
 namespace IpodCopyFix.Wpf
@@ -14,23 +12,15 @@ namespace IpodCopyFix.Wpf
         {
             base.OnStartup(e);
 
-            _container = ConfigureContainer();
+            _bootstrapper = new Bootstrapper();
 
-            Current.MainWindow = _container.Resolve<MainWindow>();
+            Current.MainWindow = _bootstrapper.Container.Resolve<MainWindow>();
             Current.MainWindow.Show();
-        }
-
-        private IUnityContainer ConfigureContainer()
-        {
-            var container = new UnityContainer();
-            container.RegisterType<IFileService, FileService>();
-            container.RegisterType<IIpodFix, IpodFix>();
-            return container;
         }
 
         #region Fields
 
-        private IUnityContainer _container;
+        private Bootstrapper _bootstrapper;
 
         #endregion
     }
