@@ -47,7 +47,7 @@ namespace IpodCopyFix.Common
             foreach (var file in files)
             {
                 var result = await FixFileAsync(file);
-                if (result)
+                if (!result)
                 {
                     skipped++;
                     var name = Path.GetFileName(file);
