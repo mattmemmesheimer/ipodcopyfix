@@ -1,7 +1,6 @@
 ﻿using IpodCopyFix.Common;
 using IpodCopyFix.Wpf.Services;
 using log4net.Config;
-using log4net.Core;
 using Microsoft.Practices.Unity;
 
 namespace IpodCopyFix.Wpf
@@ -24,8 +23,7 @@ namespace IpodCopyFix.Wpf
         public Bootstrapper()
         {
             Container = ConfigureContainer();
-
-            BasicConfigurator.Configure();
+            ConfigureLogging();
         }
 
         private IUnityContainer ConfigureContainer()
@@ -34,6 +32,11 @@ namespace IpodCopyFix.Wpf
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<IIpodFix, IpodFix>();
             return container;
+        }
+
+        private void ConfigureLogging()
+        {
+            BasicConfigurator.Configure();
         }
     }
 }

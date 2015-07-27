@@ -61,10 +61,9 @@ namespace IpodCopyFix.Common
         private async Task<bool> FixFileAsync(string path)
         {
             var tag = TagLib.File.Create(path);
-            var artist = tag.Tag.FirstAlbumArtist;
+            var artist = GetArtistName(tag.Tag);
             if (!string.IsNullOrEmpty(artist))
             {
-                artist = artist.RemoveIllegalFilenameChars();
                 using (await _lock.LockAsync())
                 {
                     // create directory if it doesn't already exist
@@ -80,6 +79,24 @@ namespace IpodCopyFix.Common
                 return false;
             }
             return true;
+        }
+
+        private static string GetArtistName(TagLib.Tag tag)
+        {
+            string artist = null;
+            if (!string.IsNullOrEmpty(tag.FirstAlbumArtist))
+            {
+                artist = tag.FirstAlbumArtist;
+            }
+            else if (!string.IsNullOrEmpty(tag.FirstPerformer))
+            {
+                artist = tag.FirstPerformer;
+            }
+            if (artist != null)
+            {
+                artist = artist.RemoveIllegalFilenameChars();
+            }
+            return artist;
         }
 
         #region Fields

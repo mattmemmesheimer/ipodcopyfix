@@ -28,7 +28,9 @@
                     Content="Choose source"
                     Command="{Binding ChooseSourceCommand}" />
                 <ListBox
+                    x:Name="SourceDirectoriesListBox"
                     Grid.Row="2"
+                    SelectionMode="Multiple"
                     ItemsSource="{Binding SourceDirectories}" />
             </Grid>
             
@@ -49,7 +51,8 @@
                     Grid.Row="2"
                     Width="120"
                     Content="Start"
-                    Command="{Binding StartCommand}" />
+                    Command="{Binding StartCommand}"
+                    CommandParameter="{Binding ElementName=SourceDirectoriesListBox, Path=SelectedItems}" />
             </Grid>
             
         </Grid>

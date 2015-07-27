@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using IpodCopyFix.Common;
@@ -74,7 +75,7 @@ namespace IpodCopyFix.Wpf.ViewModels
             _ipodFix = ipodFix;
             ChooseSourceCommand = new DelegateCommand(ChooseSourcePath);
             ChooseDestinationCommand = new DelegateCommand(ChooseDestinationPath);
-            StartCommand = new AwaitableDelegateCommand(StartAsync);
+            StartCommand = new AwaitableDelegateCommand<object>(StartAsync);
         }
 
         private void ChooseSourcePath()
@@ -96,9 +97,11 @@ namespace IpodCopyFix.Wpf.ViewModels
             }
         }
 
-        private async Task StartAsync()
+        private async Task StartAsync(object param)
         {
-            await _ipodFix.StartAsync(SourceDirectories, DestinationPath);
+            var items = (System.Collections.IList) param;
+            var selected = items.Cast<string>().ToArray();
+            await _ipodFix.StartAsync(selected, DestinationPath);
         }
 
         #region Fields
