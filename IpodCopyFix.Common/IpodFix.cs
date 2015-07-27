@@ -50,7 +50,8 @@ namespace IpodCopyFix.Common
                 if (result)
                 {
                     skipped++;
-                    Logger.DebugFormat("Skipping blank FirstArtist.");
+                    var name = Path.GetFileName(file);
+                    Logger.DebugFormat("Skipping file {0}.", name);
                 }
             }
             Logger.DebugFormat("Finished fixing directory {0}.  Skipped {1} of {2} files.", path,
