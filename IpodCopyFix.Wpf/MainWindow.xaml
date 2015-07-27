@@ -30,7 +30,7 @@
                 <ListBox
                     x:Name="SourceDirectoriesListBox"
                     Grid.Row="2"
-                    SelectionMode="Multiple"
+                    SelectionMode="Extended"
                     ItemsSource="{Binding SourceDirectories}" />
             </Grid>
             

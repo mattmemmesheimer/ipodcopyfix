@@ -41,7 +41,14 @@ namespace IpodCopyFix.Wpf.ViewModels
         public string SourcePath
         {
             get { return _sourcePath; }
-            set { SetProperty(ref _sourcePath, value); }
+            set
+            {
+                SetProperty(ref _sourcePath, value);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    ChooseSourcePath(value);
+                }
+            }
         }
 
         /// <summary>
@@ -73,17 +80,20 @@ namespace IpodCopyFix.Wpf.ViewModels
         {
             _fileService = fileService;
             _ipodFix = ipodFix;
-            ChooseSourceCommand = new DelegateCommand(ChooseSourcePath);
+            ChooseSourceCommand = new DelegateCommand<string>(ChooseSourcePath);
             ChooseDestinationCommand = new DelegateCommand(ChooseDestinationPath);
             StartCommand = new AwaitableDelegateCommand<object>(StartAsync);
         }
 
-        private void ChooseSourcePath()
+        private void ChooseSourcePath(string path = null)
         {
-            var path = _fileService.OpenFolderDialog();
+            if (path == null)
+            {
+                path = _fileService.OpenFolderDialog();
+                SourcePath = path;
+            }
             if (path != string.Empty)
             {
-                SourcePath = path;
                 SourceDirectories = Directory.GetDirectories(SourcePath);
             }
         }
