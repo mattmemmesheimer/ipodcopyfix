@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using IpodCopyFix.Common.AsyncSynchronization;
 using IpodCopyFix.Common.Util;
 using log4net;
+using TagLib;
+using File = TagLib.File;
 
 namespace IpodCopyFix.Common
 {
@@ -43,45 +45,68 @@ namespace IpodCopyFix.Common
         {
             var files = Directory.GetFiles(path);
             Logger.DebugFormat("Starting fix on directory {0} ({1} file(s)).", path, files.Length);
-            int skipped = 0;
             foreach (var file in files)
             {
-                var result = await FixFileAsync(file);
-                if (!result)
-                {
-                    skipped++;
-                    var name = Path.GetFileName(file);
-                    Logger.DebugFormat("Skipping file {0}.", name);
-                }
+                await FixFileAsync(file);
             }
-            Logger.DebugFormat("Finished fixing directory {0}.  Skipped {1} of {2} files.", path,
-                skipped, files.Length);
+            Logger.DebugFormat("Finished fixing directory {0}", path);
         }
 
-        private async Task<bool> FixFileAsync(string path)
+        private async Task FixFileAsync(string path)
         {
-            var tag = TagLib.File.Create(path);
-            var artist = GetArtistName(tag.Tag);
-            if (!string.IsNullOrEmpty(artist))
+            var file = File.Create(path);
+            var artistPath = await CreateArtistDirectory(file.Tag);
+            if (string.IsNullOrEmpty(artistPath))
             {
-                using (await _lock.LockAsync())
-                {
-                    // create directory if it doesn't already exist
-                    var dir = Path.Combine(_destinationPath, artist);
-                    if (!Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
-                }
+                // TODO: Handle the case where we are unable to create the artist directory.
+                // Perhaps allow the user to select an "Unknown Artists" directory to serve
+                // as a home to these misfit files.
+                Logger.WarnFormat("Unable to create artist directory for file {0}.", path);
+                return;
             }
-            else
+            var albumPath = await CreateAlbumDirectory(file.Tag, artistPath);
+            if (string.IsNullOrEmpty(albumPath))
             {
-                return false;
+                // TODO: Handle the case where we are unable to create the album directory.
+                // At this point, we know the artist directory was created, but the album
+                // directory was not.  Perhaps we place the misfit file in a 
+                // "Unknown Albums" directory.
+                Logger.WarnFormat("Unable to create album directory for file {0}.", path);
+                return;
             }
-            return true;
         }
 
-        private static string GetArtistName(TagLib.Tag tag)
+        private async Task<string> CreateArtistDirectory(Tag tag)
+        {
+            var artist = GetArtistName(tag);
+            if (string.IsNullOrEmpty(artist))
+            {
+                return null;
+            }
+            var dir = Path.Combine(_destinationPath, artist);
+            using (await _lock.LockAsync())
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return dir;
+        }
+
+        private async Task<string> CreateAlbumDirectory(Tag tag, string artistPath)
+        {
+            var album = GetAlbumName(tag);
+            if (string.IsNullOrEmpty(album))
+            {
+                return null;
+            }
+            var dir = Path.Combine(artistPath, album);
+            using (await _lock.LockAsync())
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return dir;
+        }
+
+        private static string GetArtistName(Tag tag)
         {
             string artist = null;
             if (!string.IsNullOrEmpty(tag.FirstAlbumArtist))
@@ -97,6 +122,16 @@ namespace IpodCopyFix.Common
                 artist = artist.RemoveIllegalFilenameChars();
             }
             return artist;
+        }
+
+        private static string GetAlbumName(Tag tag)
+        {
+            string album = tag.Album;
+            if (album != null)
+            {
+                album = album.RemoveIllegalFilenameChars();
+            }
+            return album;
         }
 
         #region Fields
