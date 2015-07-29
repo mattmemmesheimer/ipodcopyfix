@@ -5,7 +5,6 @@ using IpodCopyFix.Common.AsyncSynchronization;
 using IpodCopyFix.Common.Util;
 using log4net;
 using TagLib;
-using File = TagLib.File;
 
 namespace IpodCopyFix.Common
 {
@@ -54,7 +53,7 @@ namespace IpodCopyFix.Common
 
         private async Task FixFileAsync(string path)
         {
-            var file = File.Create(path);
+            var file = TagLib.File.Create(path);
             var artistPath = await CreateArtistDirectory(file.Tag);
             if (string.IsNullOrEmpty(artistPath))
             {
@@ -74,6 +73,7 @@ namespace IpodCopyFix.Common
                 Logger.WarnFormat("Unable to create album directory for file {0}.", path);
                 return;
             }
+            await CreateTitleFile(file.Tag, path, albumPath);
         }
 
         private async Task<string> CreateArtistDirectory(Tag tag)
@@ -91,19 +91,44 @@ namespace IpodCopyFix.Common
             return dir;
         }
 
-        private async Task<string> CreateAlbumDirectory(Tag tag, string artistPath)
+        private async Task<string> CreateAlbumDirectory(Tag tag, string path)
         {
             var album = GetAlbumName(tag);
             if (string.IsNullOrEmpty(album))
             {
                 return null;
             }
-            var dir = Path.Combine(artistPath, album);
+            var dir = Path.Combine(path, album);
             using (await _lock.LockAsync())
             {
                 Directory.CreateDirectory(dir);
             }
             return dir;
+        }
+
+        private async Task CreateTitleFile(Tag tag, string sourceFile, string destinationPath)
+        {
+            var title = GetTitle(tag);
+            if (string.IsNullOrEmpty(title))
+            {
+                return;
+            }
+            title += Path.GetExtension(sourceFile);
+            var destinationFile = Path.Combine(destinationPath, title);
+            using (await _lock.LockAsync())
+            {
+                if (System.IO.File.Exists(destinationFile))
+                {
+                    return;
+                }
+                using (var source = System.IO.File.Open(sourceFile, FileMode.Open))
+                {
+                    using (var destination = System.IO.File.Create(destinationFile))
+                    {
+                        await source.CopyToAsync(destination);
+                    }
+                }
+            }
         }
 
         private static string GetArtistName(Tag tag)
@@ -132,6 +157,16 @@ namespace IpodCopyFix.Common
                 album = album.RemoveIllegalFilenameChars();
             }
             return album;
+        }
+
+        private static string GetTitle(Tag tag)
+        {
+            string title = tag.Title;
+            if (title != null)
+            {
+                title = title.RemoveIllegalFilenameChars();
+            }
+            return title;
         }
 
         #region Fields
