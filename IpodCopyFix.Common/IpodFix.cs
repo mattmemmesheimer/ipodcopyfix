@@ -13,6 +13,12 @@ namespace IpodCopyFix.Common
     /// </summary>
     public class IpodFix :IIpodFix
     {
+        #region Constants
+
+        private const int MaxFilePath = 260;
+
+        #endregion
+
         /// <summary>
         /// Constructs a new <see cref="IpodFix"/>.
         /// </summary>
@@ -84,6 +90,11 @@ namespace IpodCopyFix.Common
                 return null;
             }
             var dir = Path.Combine(_destinationPath, artist);
+            if (dir.Length >= MaxFilePath)
+            {
+                Logger.ErrorFormat("Max file path length exceeded: {0}", dir);
+                return null;
+            }
             using (await _lock.LockAsync())
             {
                 Directory.CreateDirectory(dir);
@@ -99,6 +110,11 @@ namespace IpodCopyFix.Common
                 return null;
             }
             var dir = Path.Combine(path, album);
+            if (dir.Length >= MaxFilePath)
+            {
+                Logger.ErrorFormat("Max file path length exceeded: {0}", dir);
+                return null;
+            }
             using (await _lock.LockAsync())
             {
                 Directory.CreateDirectory(dir);
@@ -115,6 +131,11 @@ namespace IpodCopyFix.Common
             }
             title += Path.GetExtension(sourceFile);
             var destinationFile = Path.Combine(destinationPath, title);
+            if (destinationFile.Length >= MaxFilePath)
+            {
+                Logger.ErrorFormat("Max file path length exceeded: {0}", destinationFile);
+                return;
+            }
             using (await _lock.LockAsync())
             {
                 if (System.IO.File.Exists(destinationFile))
